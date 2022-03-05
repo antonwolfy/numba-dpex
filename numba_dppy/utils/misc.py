@@ -19,7 +19,7 @@ def assert_no_return(rettype):
     """
     Make sure the type of return is void/None.
 
-    @dppy.kernel does not allow users to return any value and this
+    @numba_dppy.kernel does not allow users to return any value and this
     function raises TypeError when users do return something.
 
     Args:

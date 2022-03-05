@@ -16,12 +16,12 @@ DPC++'s runtime.
     .. code-block:: python
 
         import numpy as np
-        import numba_dppy, numba_dppy as dppy
+        import numba_dppy
         import dpctl
 
-        @dppy.kernel
+        @numba_dppy.kernel
             def sum(a, b, c):
-            i = dppy.get_global_id(0)
+            i = numba_dppy.get_global_id(0)
             c[i] = a[i] + b[i]
 
         a = np.array(np.random.random(20), dtype=np.float32)
@@ -29,10 +29,10 @@ DPC++'s runtime.
         c = np.ones_like(a)
 
         with dpctl.device_context("level_zero:gpu"):
-            sum[20, dppy.DEFAULT_LOCAL_SIZE](a, b, c)
+            sum[20, numba_dppy.DEFAULT_LOCAL_SIZE](a, b, c)
 
         with dpctl.device_context("opencl:cpu"):
-            sum[20, dppy.DEFAULT_LOCAL_SIZE](a, b, c)
+            sum[20, numba_dppy.DEFAULT_LOCAL_SIZE](a, b, c)
 
 Automatic offload of NumPy expressions
 ======================================

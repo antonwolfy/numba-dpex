@@ -67,7 +67,7 @@ def _raise_no_device_found_error():
 
 def _raise_invalid_kernel_enqueue_args():
     error_message = (
-        "Incorrect number of arguments for enquing dppy.kernel. "
+        "Incorrect number of arguments for enquing numba_dppy.kernel. "
         "Usage: device_env, global size, local size. "
         "The local size argument is optional."
     )
@@ -119,14 +119,14 @@ def compile_with_dppy(pyfunc, return_type, args, is_kernel, debug=None):
         return_type: The Numba type of the return value.
         args: The list of arguments sent to the Python function.
         is_kernel (bool): Indicates whether the function is decorated
-            with @dppy.kernel or not.
+            with @numba_dppy.kernel or not.
         debug (bool): Flag to turn debug mode ON/OFF.
 
     Returns:
         cres: Compiled result.
 
     Raises:
-        TypeError: @dppy.kernel does not allow users to return any
+        TypeError: @numba_dppy.kernel does not allow users to return any
             value. TypeError is raised when users do.
 
     """

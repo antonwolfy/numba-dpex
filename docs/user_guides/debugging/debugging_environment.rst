@@ -47,7 +47,7 @@ Configure debugging environment
     .. code-block:: shell-session
 
         Thread 2.2 hit Breakpoint 1, with SIMD lanes [0-7], __main__::data_parallel_sum () at simple_sum.py:22
-        22           i = dppy.get_global_id(0)
+        22           i = numba_dppy.get_global_id(0)
         (gdb) continue
         Done...
         ...

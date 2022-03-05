@@ -52,7 +52,7 @@ def side_by_side_case(api):
         (
             "simple_dppy_func.py:29",
             "simple_dppy_func.py",
-            r"29\s+i = dppy.get_global_id\(0\)",
+            r"29\s+i = numba_dppy.get_global_id\(0\)",
             (
                 r"a_in_kernel = {meminfo = ",
                 r"b_in_kernel = {meminfo = ",
@@ -100,7 +100,7 @@ def test_info_args(
 
 @skip_no_numba055
 def test_info_functions(app):
-    expected_line = r"23\s+i = dppy.get_global_id\(0\)"
+    expected_line = r"23\s+i = numba_dppy.get_global_id\(0\)"
     setup_breakpoint(app, "simple_sum.py:23", expected_line=expected_line)
 
     app.info_functions("data_parallel_sum")

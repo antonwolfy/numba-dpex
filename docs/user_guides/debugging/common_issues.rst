@@ -23,9 +23,9 @@ It is recommended to debug at "no optimization" level via :envvar:`NUMBA_OPT` (e
 For more information, refer to the Numba documentation `Debugging JIT compiled code with GDB*`_.
 
 It is possible to enable debug mode for the full application by setting the environment variable ``NUMBA_DPPY_DEBUGINFO=1``
-instead of ``debug`` option inside the ``dppy.kernel`` decorator. This sets the default value of the debug option in
-``dppy.kernel``. If ``NUMBA_DPPY_DEBUGINFO`` is set to a non-zero value, the debug data is emitted for the full application.
-Debug mode can be turned off on individual functions by setting ``debug=False`` in ``dppy.kernel``.
+instead of ``debug`` option inside the ``numba_dppy.kernel`` decorator. This sets the default value of the debug option in
+``numba_dppy.kernel``. If ``NUMBA_DPPY_DEBUGINFO`` is set to a non-zero value, the debug data is emitted for the full application.
+Debug mode can be turned off on individual functions by setting ``debug=False`` in ``numba_dppy.kernel``.
 
 See also:
 

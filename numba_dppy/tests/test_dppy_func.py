@@ -15,7 +15,7 @@
 import dpctl
 import numpy as np
 
-import numba_dppy as dppy
+import numba_dppy
 from numba_dppy.tests._helper import skip_no_opencl_gpu
 
 
@@ -24,13 +24,13 @@ class TestDPPYFunc:
     N = 257
 
     def test_dppy_func_device_array(self):
-        @dppy.func
+        @numba_dppy.func
         def g(a):
             return a + 1
 
-        @dppy.kernel
+        @numba_dppy.kernel
         def f(a, b):
-            i = dppy.get_global_id(0)
+            i = numba_dppy.get_global_id(0)
             b[i] = g(a[i])
 
         a = np.ones(self.N)
@@ -38,23 +38,23 @@ class TestDPPYFunc:
 
         device = dpctl.SyclDevice("opencl:gpu")
         with dpctl.device_context(device):
-            f[self.N, dppy.DEFAULT_LOCAL_SIZE](a, b)
+            f[self.N, numba_dppy.DEFAULT_LOCAL_SIZE](a, b)
 
         assert np.all(b == 2)
 
     def test_dppy_func_ndarray(self):
-        @dppy.func
+        @numba_dppy.func
         def g(a):
             return a + 1
 
-        @dppy.kernel
+        @numba_dppy.kernel
         def f(a, b):
-            i = dppy.get_global_id(0)
+            i = numba_dppy.get_global_id(0)
             b[i] = g(a[i])
 
-        @dppy.kernel
+        @numba_dppy.kernel
         def h(a, b):
-            i = dppy.get_global_id(0)
+            i = numba_dppy.get_global_id(0)
             b[i] = g(a[i]) + 1
 
         a = np.ones(self.N)
@@ -62,10 +62,10 @@ class TestDPPYFunc:
 
         device = dpctl.SyclDevice("opencl:gpu")
         with dpctl.device_context(device):
-            f[self.N, dppy.DEFAULT_LOCAL_SIZE](a, b)
+            f[self.N, numba_dppy.DEFAULT_LOCAL_SIZE](a, b)
 
             assert np.all(b == 2)
 
-            h[self.N, dppy.DEFAULT_LOCAL_SIZE](a, b)
+            h[self.N, numba_dppy.DEFAULT_LOCAL_SIZE](a, b)
 
             assert np.all(b == 3)

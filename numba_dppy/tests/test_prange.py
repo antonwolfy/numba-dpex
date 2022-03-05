@@ -18,7 +18,7 @@ import numpy as np
 import pytest
 from numba import njit, prange
 
-import numba_dppy as dppy
+import numba_dppy
 from numba_dppy.tests._helper import assert_auto_offloading, skip_no_opencl_gpu
 
 

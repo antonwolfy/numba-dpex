@@ -16,16 +16,16 @@
 import dpctl
 import numpy as np
 
-import numba_dppy as dppy
+import numba_dppy
 
 
-@dppy.kernel
+@numba_dppy.kernel
 def dppy_gemm(a, b, c):
     """
     A basic DGEMM implemented as a ``kernel`` function.
     """
-    i = dppy.get_global_id(0)
-    j = dppy.get_global_id(1)
+    i = numba_dppy.get_global_id(0)
+    j = numba_dppy.get_global_id(1)
     if i >= c.shape[0] or j >= c.shape[1]:
         return
     c[i, j] = 0

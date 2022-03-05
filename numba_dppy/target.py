@@ -250,7 +250,7 @@ class DPPYTargetContext(BaseContext):
         module = func.module
         arginfo = self.get_arg_packer(argtypes)
         wrapperfnty = lc.Type.function(lc.Type.void(), arginfo.argument_types)
-        wrapper_module = self.create_module("dppy.kernel.wrapper")
+        wrapper_module = self.create_module("numba_dppy.kernel.wrapper")
         wrappername = "dppyPy_{name}".format(name=func.name)
         argtys = list(arginfo.argument_types)
         fnty = lc.Type.function(

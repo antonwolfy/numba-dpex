@@ -17,10 +17,10 @@ import dpctl
 import numpy as np
 from _helper import has_cpu, has_gpu
 
-import numba_dppy as dppy
+import numba_dppy
 
 
-@dppy.kernel(
+@numba_dppy.kernel(
     access_types={
         "read_only": ["a", "b"],
         "write_only": ["c"],
@@ -28,7 +28,7 @@ import numba_dppy as dppy
     }
 )
 def data_parallel_sum(a, b, c):
-    i = dppy.get_global_id(0)
+    i = numba_dppy.get_global_id(0)
     c[i] = a[i] + b[i]
 
 

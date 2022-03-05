@@ -23,7 +23,7 @@ from numba.core.typing.templates import (
     signature,
 )
 
-import numba_dppy as dppy
+import numba_dppy
 from numba_dppy.dppy_array_type import DPPYArray
 from numba_dppy.utils import address_space
 
@@ -37,71 +37,71 @@ intrinsic_global = registry.register_global
 
 @intrinsic
 class Ocl_get_global_id(ConcreteTemplate):
-    key = dppy.get_global_id
+    key = numba_dppy.get_global_id
     cases = [signature(types.intp, types.uint32)]
 
 
 @intrinsic
 class Ocl_get_local_id(ConcreteTemplate):
-    key = dppy.get_local_id
+    key = numba_dppy.get_local_id
     cases = [signature(types.intp, types.uint32)]
 
 
 @intrinsic
 class Ocl_get_group_id(ConcreteTemplate):
-    key = dppy.get_group_id
+    key = numba_dppy.get_group_id
     cases = [signature(types.intp, types.uint32)]
 
 
 @intrinsic
 class Ocl_get_num_groups(ConcreteTemplate):
-    key = dppy.get_num_groups
+    key = numba_dppy.get_num_groups
     cases = [signature(types.intp, types.uint32)]
 
 
 @intrinsic
 class Ocl_get_work_dim(ConcreteTemplate):
-    key = dppy.get_work_dim
+    key = numba_dppy.get_work_dim
     cases = [signature(types.uint32)]
 
 
 @intrinsic
 class Ocl_get_global_size(ConcreteTemplate):
-    key = dppy.get_global_size
+    key = numba_dppy.get_global_size
     cases = [signature(types.intp, types.uint32)]
 
 
 @intrinsic
 class Ocl_get_local_size(ConcreteTemplate):
-    key = dppy.get_local_size
+    key = numba_dppy.get_local_size
     cases = [signature(types.intp, types.uint32)]
 
 
 @intrinsic
 class Ocl_barrier(ConcreteTemplate):
-    key = dppy.barrier
+    key = numba_dppy.barrier
     cases = [signature(types.void, types.uint32), signature(types.void)]
 
 
 @intrinsic
 class Ocl_mem_fence(ConcreteTemplate):
-    key = dppy.mem_fence
+    key = numba_dppy.mem_fence
     cases = [signature(types.void, types.uint32)]
 
 
 @intrinsic
 class Ocl_sub_group_barrier(ConcreteTemplate):
-    key = dppy.sub_group_barrier
+    key = numba_dppy.sub_group_barrier
 
     cases = [signature(types.void)]
 
 
-# dppy.atomic submodule -------------------------------------------------------
+# numba_dppy.atomic submodule -------------------------------------------------------
 
 
 @intrinsic
 class Ocl_atomic_add(AbstractTemplate):
-    key = dppy.atomic.add
+    key = numba_dppy.atomic.add
 
     def generic(self, args, kws):
         assert not kws
@@ -115,7 +115,7 @@ class Ocl_atomic_add(AbstractTemplate):
 
 @intrinsic
 class Ocl_atomic_sub(AbstractTemplate):
-    key = dppy.atomic.sub
+    key = numba_dppy.atomic.sub
 
     def generic(self, args, kws):
         assert not kws
@@ -129,7 +129,7 @@ class Ocl_atomic_sub(AbstractTemplate):
 
 @intrinsic_attr
 class OclAtomicTemplate(AttributeTemplate):
-    key = types.Module(dppy.atomic)
+    key = types.Module(numba_dppy.atomic)
 
     def resolve_add(self, mod):
         return types.Function(Ocl_atomic_add)
@@ -138,15 +138,15 @@ class OclAtomicTemplate(AttributeTemplate):
         return types.Function(Ocl_atomic_sub)
 
 
-intrinsic_global(dppy.atomic.add, types.Function(Ocl_atomic_add))
-intrinsic_global(dppy.atomic.sub, types.Function(Ocl_atomic_sub))
+intrinsic_global(numba_dppy.atomic.add, types.Function(Ocl_atomic_add))
+intrinsic_global(numba_dppy.atomic.sub, types.Function(Ocl_atomic_sub))
 
-# dppy.local submodule -------------------------------------------------------
+# numba_dppy.local submodule -------------------------------------------------------
 
 
 @intrinsic
 class OCL_local_array(CallableTemplate):
-    key = dppy.local.array
+    key = numba_dppy.local.array
 
     def generic(self):
         def typer(shape, dtype):
@@ -179,18 +179,18 @@ class OCL_local_array(CallableTemplate):
 
 @intrinsic_attr
 class OclLocalTemplate(AttributeTemplate):
-    key = types.Module(dppy.local)
+    key = types.Module(numba_dppy.local)
 
     def resolve_array(self, mod):
         return types.Function(OCL_local_array)
 
 
-# dppy.private submodule -------------------------------------------------------
+# numba_dppy.private submodule -------------------------------------------------------
 
 
 @intrinsic
 class OCL_private_array(CallableTemplate):
-    key = dppy.private.array
+    key = numba_dppy.private.array
 
     def generic(self):
         def typer(shape, dtype):
@@ -223,7 +223,7 @@ class OCL_private_array(CallableTemplate):
 
 @intrinsic_attr
 class OclPrivateTemplate(AttributeTemplate):
-    key = types.Module(dppy.private)
+    key = types.Module(numba_dppy.private)
 
     def resolve_array(self, mod):
         return types.Function(OCL_private_array)
@@ -234,7 +234,7 @@ class OclPrivateTemplate(AttributeTemplate):
 
 @intrinsic_attr
 class OclModuleTemplate(AttributeTemplate):
-    key = types.Module(dppy)
+    key = types.Module(numba_dppy)
 
     def resolve_get_global_id(self, mod):
         return types.Function(Ocl_get_global_id)
@@ -267,15 +267,15 @@ class OclModuleTemplate(AttributeTemplate):
         return types.Function(Ocl_sub_group_barrier)
 
     def resolve_atomic(self, mod):
-        return types.Module(dppy.atomic)
+        return types.Module(numba_dppy.atomic)
 
     def resolve_local(self, mod):
-        return types.Module(dppy.local)
+        return types.Module(numba_dppy.local)
 
     def resolve_private(self, mod):
-        return types.Module(dppy.private)
+        return types.Module(numba_dppy.private)
 
 
 # intrinsic
 
-intrinsic_global(dppy, types.Module(dppy))
+intrinsic_global(numba_dppy, types.Module(numba_dppy))

@@ -21,7 +21,7 @@ import numpy as np
 import pytest
 from numba import njit
 
-import numba_dppy as dppy
+import numba_dppy
 from numba_dppy.tests._helper import (
     assert_auto_offloading,
     filter_strings,

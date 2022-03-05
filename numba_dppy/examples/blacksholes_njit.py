@@ -20,7 +20,7 @@ import dpctl
 import numba
 import numpy as np
 
-import numba_dppy as dppy
+import numba_dppy
 
 
 @numba.vectorize(nopython=True)

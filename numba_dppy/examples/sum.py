@@ -17,22 +17,22 @@ import dpctl
 import numpy as np
 import numpy.testing as testing
 
-import numba_dppy as dppy
+import numba_dppy
 
 
-@dppy.kernel
+@numba_dppy.kernel
 def data_parallel_sum(a, b, c):
     """
     Vector addition using the ``kernel`` decorator.
     """
-    i = dppy.get_global_id(0)
+    i = numba_dppy.get_global_id(0)
     c[i] = a[i] + b[i]
 
 
 def driver(a, b, c, global_size):
     print("A : ", a)
     print("B : ", b)
-    data_parallel_sum[global_size, dppy.DEFAULT_LOCAL_SIZE](a, b, c)
+    data_parallel_sum[global_size, numba_dppy.DEFAULT_LOCAL_SIZE](a, b, c)
     print("A + B = ")
     print("C ", c)
     testing.assert_equal(c, a + b)

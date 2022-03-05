@@ -52,7 +52,7 @@ The below code snippet will result in error reported in this [Issue](https://git
 import numpy as np, numba_dppy
 @numba_dppy.kernel
 def div_kernel(dst, src, m):
-    i = dppy.get_global_id(0)
+    i = numba_dppy.get_global_id(0)
     dst[i] = src[i] // m
 
 import dpctl

@@ -52,7 +52,7 @@ from numba.core.typing import signature
 from numba.parfors import parfor
 from numba.parfors.parfor_lowering import _lower_parfor_parallel
 
-import numba_dppy as dppy
+import numba_dppy
 from numba_dppy import config
 from numba_dppy.dpctl_iface import KernelLaunchOps
 from numba_dppy.dppy_array_type import DPPYArray
@@ -94,7 +94,7 @@ def _schedule_loop(parfor_dim, legal_loop_indices, loop_ranges, param_dict):
             "    "
             + legal_loop_indices[eachdim]
             + " = "
-            + "dppy.get_global_id("
+            + "numba_dppy.get_global_id("
             + str(eachdim)
             + ")\n"
         )
@@ -666,7 +666,7 @@ def _create_gufunc_for_parfor_body(
         print("after DUFunc inline".center(80, "-"))
         gufunc_ir.dump()
 
-    kernel_func = dppy.compiler.compile_kernel_parfor(
+    kernel_func = numba_dppy.compiler.compile_kernel_parfor(
         dpctl.get_current_queue(),
         gufunc_ir,
         gufunc_param_types,

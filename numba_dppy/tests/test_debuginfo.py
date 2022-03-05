@@ -19,7 +19,7 @@ import dpctl
 import pytest
 from numba.core import types
 
-import numba_dppy as dppy
+import numba_dppy
 from numba_dppy import compiler
 from numba_dppy.tests._helper import override_config
 from numba_dppy.utils import npytypes_array_to_dppy_array
@@ -54,7 +54,7 @@ def test_debug_flag_generates_ir_with_debuginfo(debug_option):
     Check debug info is emitting to IR if debug parameter is set to True
     """
 
-    @dppy.kernel
+    @numba_dppy.kernel
     def foo(x):
         x = 1  # noqa
 
@@ -77,9 +77,9 @@ def test_debug_info_locals_vars_on_no_opt():
     and optimization is O0
     """
 
-    @dppy.kernel
+    @numba_dppy.kernel
     def foo(var_a, var_b, var_c):
-        i = dppy.get_global_id(0)
+        i = numba_dppy.get_global_id(0)
         var_c[i] = var_a[i] + var_b[i]
 
     ir_tags = [
@@ -108,9 +108,9 @@ def test_debug_kernel_local_vars_in_ir():
     Check llvm debug tag DILocalVariable is emitting to IR for variables created in kernel
     """
 
-    @dppy.kernel
+    @numba_dppy.kernel
     def foo(arr):
-        index = dppy.get_global_id(0)
+        index = numba_dppy.get_global_id(0)
         local_d = 9 * 99 + 5
         arr[index] = local_d + 100
 
@@ -133,14 +133,14 @@ def test_debug_flag_generates_ir_with_debuginfo_for_func(debug_option):
     Check debug info is emitting to IR if debug parameter is set to True
     """
 
-    @dppy.func(debug=debug_option)
+    @numba_dppy.func(debug=debug_option)
     def func_sum(a, b):
         result = a + b
         return result
 
-    @dppy.kernel(debug=debug_option)
+    @numba_dppy.kernel(debug=debug_option)
     def data_parallel_sum(a, b, c):
-        i = dppy.get_global_id(0)
+        i = numba_dppy.get_global_id(0)
         c[i] = func_sum(a[i], b[i])
 
     ir_tags = [
@@ -168,14 +168,14 @@ def test_env_var_generates_ir_with_debuginfo_for_func(debug_option):
     Check debug info is emitting to IR if NUMBA_DPPY_DEBUGINFO is set to 1
     """
 
-    @dppy.func
+    @numba_dppy.func
     def func_sum(a, b):
         result = a + b
         return result
 
-    @dppy.kernel
+    @numba_dppy.kernel
     def data_parallel_sum(a, b, c):
-        i = dppy.get_global_id(0)
+        i = numba_dppy.get_global_id(0)
         c[i] = func_sum(a[i], b[i])
 
     ir_tags = [
@@ -198,9 +198,9 @@ def test_env_var_generates_ir_with_debuginfo_for_func(debug_option):
 
 
 def test_debuginfo_DISubprogram_linkageName():
-    @dppy.kernel
+    @numba_dppy.kernel
     def func(a, b):
-        i = dppy.get_global_id(0)
+        i = numba_dppy.get_global_id(0)
         b[i] = a[i]
 
     ir_tags = [
@@ -220,9 +220,9 @@ def test_debuginfo_DISubprogram_linkageName():
 
 
 def test_debuginfo_DICompileUnit_language_and_producer():
-    @dppy.kernel
+    @numba_dppy.kernel
     def func(a, b):
-        i = dppy.get_global_id(0)
+        i = numba_dppy.get_global_id(0)
         b[i] = a[i]
 
     ir_tags = [

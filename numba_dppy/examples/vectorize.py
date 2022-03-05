@@ -16,7 +16,7 @@ import dpctl
 import numpy as np
 from numba import float64, vectorize
 
-import numba_dppy as dppy
+import numba_dppy
 
 
 @vectorize(nopython=True)

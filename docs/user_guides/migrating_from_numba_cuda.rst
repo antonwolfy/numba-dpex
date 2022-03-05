@@ -8,7 +8,7 @@
 .. Transition from Numba CUDA
 .. --------------------------
 
-.. Replace ``@cuda.jit(device=True)`` with ``@dppy.func``.
+.. Replace ``@cuda.jit(device=True)`` with ``@numba_dppy.func``.
 
 .. See also
 .. --------

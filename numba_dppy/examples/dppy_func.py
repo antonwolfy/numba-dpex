@@ -15,10 +15,10 @@
 import dpctl
 import numpy as np
 
-import numba_dppy as dppy
+import numba_dppy
 
 
-@dppy.func
+@numba_dppy.func
 def a_device_function(a):
     """
     A ``func`` is a device callable function that can be invoked from
@@ -27,21 +27,21 @@ def a_device_function(a):
     return a + 1
 
 
-@dppy.func
+@numba_dppy.func
 def another_device_function(a):
     return a_device_function(a)
 
 
-@dppy.kernel
+@numba_dppy.kernel
 def a_kernel_function(a, b):
-    i = dppy.get_global_id(0)
+    i = numba_dppy.get_global_id(0)
     b[i] = another_device_function(a[i])
 
 
 def driver(a, b, N):
     print(b)
     print("--------")
-    a_kernel_function[N, dppy.DEFAULT_LOCAL_SIZE](a, b)
+    a_kernel_function[N, numba_dppy.DEFAULT_LOCAL_SIZE](a, b)
     print(b)
 
 

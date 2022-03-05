@@ -20,7 +20,7 @@ import dpctl
 import numpy as np
 from numba.np.ufunc import deviceufunc
 
-import numba_dppy as dppy
+import numba_dppy
 from numba_dppy.utils import (
     as_usm_obj,
     copy_to_numpy_from_usm_obj,
@@ -37,16 +37,16 @@ def __vectorized_{name}({args}, __out__):
 
 class DPPYVectorize(deviceufunc.DeviceVectorize):
     def _compile_core(self, sig):
-        devfn = dppy.func(sig)(self.pyfunc)
+        devfn = numba_dppy.func(sig)(self.pyfunc)
         return devfn, devfn.cres.signature.return_type
 
     def _get_globals(self, corefn):
         glbl = self.pyfunc.__globals__.copy()
-        glbl.update({"__dppy__": dppy, "__core__": corefn})
+        glbl.update({"__dppy__": numba_dppy, "__core__": corefn})
         return glbl
 
     def _compile_kernel(self, fnobj, sig):
-        return dppy.kernel(sig)(fnobj)
+        return numba_dppy.kernel(sig)(fnobj)
 
     def build_ufunc(self):
         return DPPYUFuncDispatcher(self.kernelmap)
@@ -203,7 +203,7 @@ class DPPYUFuncMechanism(deviceufunc.UFuncMechanism):
         copy_to_numpy_from_usm_obj(devary_memview, hostary)
 
     def launch(self, func, count, queue, args):
-        func[count, dppy.DEFAULT_LOCAL_SIZE](*args)
+        func[count, numba_dppy.DEFAULT_LOCAL_SIZE](*args)
 
     def device_array(self, shape, dtype, queue):
         size = np.prod(shape)

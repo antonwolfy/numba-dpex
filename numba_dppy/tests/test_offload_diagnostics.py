@@ -17,7 +17,7 @@ import numpy as np
 from numba import njit, prange
 from numba.tests.support import captured_stdout
 
-import numba_dppy as dppy
+import numba_dppy
 from numba_dppy import config as dppy_config
 from numba_dppy.tests._helper import skip_no_opencl_gpu
 
@@ -48,9 +48,9 @@ class TestOffloadDiagnostics:
             assert "Device -" in got.getvalue()
 
     def test_kernel(self):
-        @dppy.kernel
+        @numba_dppy.kernel
         def parallel_sum(a, b, c):
-            i = dppy.get_global_id(0)
+            i = numba_dppy.get_global_id(0)
             c[i] = a[i] + b[i]
 
         global_size = 10
@@ -65,7 +65,7 @@ class TestOffloadDiagnostics:
             dppy_config.OFFLOAD_DIAGNOSTICS = 1
 
             with captured_stdout() as got:
-                parallel_sum[global_size, dppy.DEFAULT_LOCAL_SIZE](a, b, c)
+                parallel_sum[global_size, numba_dppy.DEFAULT_LOCAL_SIZE](a, b, c)
 
             dppy_config.OFFLOAD_DIAGNOSTICS = 0
             assert "Auto-offloading" in got.getvalue()

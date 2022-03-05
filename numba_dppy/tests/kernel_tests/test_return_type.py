@@ -16,7 +16,7 @@ import dpctl
 import numpy as np
 import pytest
 
-import numba_dppy as dppy
+import numba_dppy
 from numba_dppy.tests._helper import filter_strings
 
 
@@ -40,8 +40,8 @@ def test_return(filter_str, sig):
     a = np.array(np.random.random(122), np.int32)
 
     with pytest.raises(TypeError):
-        kernel = dppy.kernel(sig)(f)
+        kernel = numba_dppy.kernel(sig)(f)
 
         device = dpctl.SyclDevice(filter_str)
         with dpctl.device_context(device):
-            kernel[a.size, dppy.DEFAULT_LOCAL_SIZE](a)
+            kernel[a.size, numba_dppy.DEFAULT_LOCAL_SIZE](a)

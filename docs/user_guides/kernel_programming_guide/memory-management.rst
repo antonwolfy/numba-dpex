@@ -80,7 +80,7 @@ the device, the local memory is exposed as a contiguous array of a specific
 types. The maximum available local memory is hardware-specific. The SYCL local
 memory concept is analogous to CUDA's shared memory concept.
 
-``numba-dppy`` provides a special function ``dppy.local.array`` to
+``numba-dppy`` provides a special function ``numba_dppy.local.array`` to
 allocate local memory for a kernel.
 
 .. literalinclude:: ../../../numba_dppy/examples/barrier.py

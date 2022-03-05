@@ -18,9 +18,9 @@ Module to interact with Intel based devices
 
 
 Extensions to Numba for Intel GPUs introduce two new features into Numba:
-    a.  A new backend that has a new decorator called @dppy.kernel that
+    a.  A new backend that has a new decorator called @numba_dppy.kernel that
         exposes an explicit kernel programming interface similar to the
-        existing Numba GPU code-generation backends. The @dppy.kernel
+        existing Numba GPU code-generation backends. The @numba_dppy.kernel
         decorator currently implements a subset of OpenCL’s API through
         Numba’s intrinsic functions.
 
@@ -34,48 +34,48 @@ Extensions to Numba for Intel GPUs introduce two new features into Numba:
 Explicit Kernel Prgoramming with new Docorators:
 
 
-@dppy.kernel
+@numba_dppy.kernel
 
-    The @dppy.kernel decorator can be used with or without extra arguments.
+    The @numba_dppy.kernel decorator can be used with or without extra arguments.
     Optionally, users can pass the signature of the arguments to the
     decorator. When a signature is provided to the DK decorator the version
     of the OpenCL kernel generated gets specialized for that type signature.
 
     ---------------------------------------------------------------------------
-    @dppy.kernel
+    @numba_dppy.kernel
     def data_parallel_sum(a, b, c):
-        i = dppy.get_global_id(0)
+        i = numba_dppy.get_global_id(0)
         c[i] = a[i] + b[i]
     ---------------------------------------------------------------------------
 
     To invoke the above function users will need to provide a
     global size (OpenCL) which is the size of a (same as b and c) and a
-    local size (dppy.DEFAULT_LOCAL_SIZE if user don't want to specify).
+    local size (numba_dppy.DEFAULT_LOCAL_SIZE if user don't want to specify).
     Example shown below:
 
     ---------------------------------------------------------------------------
-    data_parallel_sum[len(a), dppy.DEFAULT_LOCAL_SIZE](dA, dB, dC)
+    data_parallel_sum[len(a), numba_dppy.DEFAULT_LOCAL_SIZE](dA, dB, dC)
     ---------------------------------------------------------------------------
 
 
-@dppy.func
+@numba_dppy.func
 
-    The @dppy.func decorator is the other decorator provided in the explicit
+    The @numba_dppy.func decorator is the other decorator provided in the explicit
     kernel programming model. This decorator allows users to write “device”
     functions that can be invoked from inside DK functions but cannot be invoked
     from the host. The decorator also supports type specialization as with the
-    DK decorator. Functions decorated with @dppy.func will also be JIT compiled
-    and inlined into the OpenCL Program containing the @dppy.kernel function
-    calling it. A @dppy.func will not be launched as an OpenCL kernel.
+    DK decorator. Functions decorated with @numba_dppy.func will also be JIT compiled
+    and inlined into the OpenCL Program containing the @numba_dppy.kernel function
+    calling it. A @numba_dppy.func will not be launched as an OpenCL kernel.
 
     ---------------------------------------------------------------------------
-    @dppy.func
+    @numba_dppy.func
     def bar(a):
         return a*a
 
-    @dppy.kernel
+    @numba_dppy.kernel
     def foo(in, out):
-        i = dppy.get_global_id(0)
+        i = numba_dppy.get_global_id(0)
         out[i] = bar(in[i])
     ---------------------------------------------------------------------------
 
@@ -174,16 +174,16 @@ Other Intrinsic Functions
 
 
 
-Complete Example using @dppy.kernel:
+Complete Example using @numba_dppy.kernel:
 
     ---------------------------------------------------------------------------
     import numpy as np
-    import numba_dppy, numba_dppy as dppy
+    import numba_dppy
     import dpctl
 
-    @dppy.kernel
+    @numba_dppy.kernel
     def data_parallel_sum(a, b, c):
-        i = dppy.get_global_id(0)
+        i = numba_dppy.get_global_id(0)
         c[i] = a[i] + b[i]
 
     def driver(device_env, a, b, c, global_size):
@@ -195,7 +195,7 @@ Complete Example using @dppy.kernel:
         print("before : ", dA._ndarray)
         print("before : ", dB._ndarray)
         print("before : ", dC._ndarray)
-        data_parallel_sum[global_size, dppy.DEFAULT_LOCAL_SIZE](dA, dB, dC)
+        data_parallel_sum[global_size, numba_dppy.DEFAULT_LOCAL_SIZE](dA, dB, dC)
         device_env.copy_array_from_device(dC)
         print("after : ", dC._ndarray)
 

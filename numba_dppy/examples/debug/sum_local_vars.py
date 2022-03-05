@@ -15,12 +15,12 @@
 import dpctl
 import numpy as np
 
-import numba_dppy as dppy
+import numba_dppy
 
 
-@dppy.kernel(debug=True)
+@numba_dppy.kernel(debug=True)
 def data_parallel_sum(a, b, c):
-    i = dppy.get_global_id(0)
+    i = numba_dppy.get_global_id(0)
     l1 = a[i] + 2.5
     l2 = b[i] * 0.3
     c[i] = l1 + l2
@@ -35,6 +35,6 @@ c = np.ones_like(a)
 
 device = dpctl.SyclDevice("opencl:gpu")
 with dpctl.device_context(device):
-    data_parallel_sum[global_size, dppy.DEFAULT_LOCAL_SIZE](a, b, c)
+    data_parallel_sum[global_size, numba_dppy.DEFAULT_LOCAL_SIZE](a, b, c)
 
 print("Done...")

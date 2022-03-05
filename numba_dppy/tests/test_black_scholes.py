@@ -18,7 +18,7 @@ import time
 import dpctl
 import numpy as np
 
-import numba_dppy as dppy
+import numba_dppy
 from numba_dppy.tests._helper import skip_no_opencl_gpu
 
 RISKFREE = 0.02
@@ -100,9 +100,9 @@ class TestDPPYBlackScholes:
             )
 
         # numba-dppy
-        @dppy.kernel
+        @numba_dppy.kernel
         def black_scholes_dppy(callResult, putResult, S, X, T, R, V):
-            i = dppy.get_global_id(0)
+            i = numba_dppy.get_global_id(0)
             if i >= S.shape[0]:
                 return
             sqrtT = math.sqrt(T[i])

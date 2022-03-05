@@ -35,12 +35,12 @@ the two ways in which kernels may be written in a Numba-dppy program.
     .. code-block:: python
 
         import numpy as np
-        import numba_dppy as dppy
+        import numba_dppy
         import dpctl
 
-        @dppy.kernel
+        @numba_dppy.kernel
         def sum(a, b, c):
-            i = dppy.get_global_id(0)
+            i = numba_dppy.get_global_id(0)
             c[i] = a[i] + b[i]
 
         a = np.array(np.random.random(20), dtype=np.float32)
@@ -48,7 +48,7 @@ the two ways in which kernels may be written in a Numba-dppy program.
         c = np.ones_like(a)
 
         with dpctl.device_context("opencl:gpu"):
-            sum[20, dppy.DEFAULT_LOCAL_SIZE](a, b, c)
+            sum[20, numba_dppy.DEFAULT_LOCAL_SIZE](a, b, c)
 
   - Writing implicitly data-parallel expressions in the fashion of
     `Numba parallel loops <https://numba.pydata.org/numba-doc/dev/user/parallel.html#explicit-parallel-loops>`_.

@@ -7,7 +7,7 @@ run simple_dppy_func.py
 # Expected:
 # ...
 # Thread 2.2 hit Breakpoint 1, with SIMD lanes [0-7], __main__::kernel_sum () at simple_dppy_func.py:28
-# 28          i = dppy.get_global_id(0)
+# 28          i = numba_dppy.get_global_id(0)
 backtrace
 # Expected:
 # #0  __main__::kernel_sum () at simple_dppy_func.py:28
@@ -16,7 +16,7 @@ continue
 # ...
 # [Switching to Thread 1.1073742080 lane 0]
 # Thread 2.3 hit Breakpoint 1, with SIMD lanes [0-1], __main__::kernel_sum () at simple_dppy_func.py:28
-# 28          i = dppy.get_global_id(0)
+# 28          i = numba_dppy.get_global_id(0)
 continue
 # Expected:
 # ...

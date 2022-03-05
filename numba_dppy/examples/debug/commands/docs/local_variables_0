@@ -4,7 +4,7 @@ $ NUMBA_OPT=0 gdb-oneapi -q python
 (gdb) run sum_local_vars.py
 ...
 Thread 2.2 hit Breakpoint 1, with SIMD lanes [0-7], __main__::data_parallel_sum () at sum_local_vars.py:22
-22          i = dppy.get_global_id(0)
+22          i = numba_dppy.get_global_id(0)
 (gdb) info locals
 a = '\000' <repeats 55 times>
 b = '\000' <repeats 55 times>
@@ -23,7 +23,7 @@ __ocl_dbg_grid1 = 0
 __ocl_dbg_grid2 = 0
 (gdb) next
 Thread 2.3 hit Breakpoint 1, with SIMD lanes [0-1], __main__::data_parallel_sum () at sum_local_vars.py:22
-22          i = dppy.get_global_id(0)
+22          i = numba_dppy.get_global_id(0)
 (gdb) next
 23          l1 = a[i] + 2.5
 (gdb) next
